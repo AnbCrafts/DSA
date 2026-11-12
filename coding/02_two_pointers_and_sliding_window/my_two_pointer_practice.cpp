@@ -183,7 +183,44 @@ void sortColors(vector<int>& nums) {
  * Time Target: O(N), Space Target: O(1)
  */
 void segregateEvenOdd(vector<int>& arr) {
-    // TODO: Write your solution here using converging two-pointers.
+    int left =0;
+    int right = 1;
+    
+    while (right<arr.size())
+    {
+        // 11
+        if((arr[left]%2==1) &&(arr[right]%2==1) ){
+            left++;
+            right++;
+            // 01
+        }else if((abs(arr[left]%2)==0) &&(arr[right]%2==1)){
+            swap(arr[left],arr[right]);
+            left ++;
+            right++;
+            // 10
+        }else if((abs(arr[left]%2)==1) &&(arr[right]%2==0)){
+            left ++;
+            right++;
+        }
+        // 00
+        else if((arr[left]%2==0) &&(arr[right]%2==0)){
+            right++;
+        }
+    }
+
+    // Simplified 
+
+
+    int left2 = 0;
+    for (int right = 0; right < arr.size(); right++) {
+        if (arr[right] % 2 != 0) { // If right is odd
+            swap(arr[left2], arr[right]);
+            left2++;
+        }
+    }
+    
+
+    
 }
 
 /**
@@ -193,6 +230,7 @@ void segregateEvenOdd(vector<int>& arr) {
  */
 void mergeSortedArrays(vector<int>& nums1, int m, vector<int>& nums2, int n) {
     // TODO: Write your solution here by filling nums1 backwards from index (m + n - 1).
+    
 }
 
 /**
@@ -202,6 +240,15 @@ void mergeSortedArrays(vector<int>& nums1, int m, vector<int>& nums2, int n) {
  */
 bool findPairWithDifference(vector<int>& arr, int k) {
     // TODO: Write your solution here by sorting and moving two pointers in same direction.
+
+    int left =0;
+    for (int right = 0; right < arr.size(); right++)
+    {
+       if((abs(arr[left]-arr[right])==k)&& left!=right){
+        return true;
+       }
+    }
+    
     return false;
 }
 
@@ -215,8 +262,26 @@ bool findPairWithDifference(vector<int>& arr, int k) {
  * Time Target: O(N), Space Target: O(1)
  */
 int maxArea(const vector<int>& height) {
-    // TODO: Write your solution here using converging pointers.
-    return 0;
+    int maxWater = 0;
+    int left = 0;
+    int right = (int)height.size() - 1; 
+
+    while (left < right) {
+        int width = right - left;
+        int effectiveHeight = min(height[left], height[right]);
+        
+        int currentWater = width * effectiveHeight;
+        maxWater = max(maxWater, currentWater);
+
+        
+        if (height[left] < height[right]) {
+            left++;
+        } else {
+            right--;
+        }
+    }
+
+    return maxWater;
 }
 
 /**
@@ -226,6 +291,7 @@ int maxArea(const vector<int>& height) {
  */
 vector<vector<int>> threeSum(vector<int>& nums) {
     // TODO: Write your solution here using sort + 2-pointer with duplicate skipping.
+
     return {};
 }
 
@@ -236,6 +302,7 @@ vector<vector<int>> threeSum(vector<int>& nums) {
  */
 int numRescueBoats(vector<int>& people, int limit) {
     // TODO: Write your solution here using greedy sort + two-pointers.
+
     return 0;
 }
 
@@ -259,8 +326,32 @@ vector<int> subarraySumPositive(const vector<int>& arr, long long target) {
  * Time Target: O(N), Space Target: O(1)
  */
 int trapRainWater(const vector<int>& height) {
-    // TODO: Write your solution here using two pointers with left_max & right_max.
-    return 0;
+    int n = height.size();
+    if (n <= 2) return 0; // Need at least 3 bars to trap any water
+
+    int left = 0, right = n - 1;
+    int left_max = 0, right_max = 0;
+    int totalWater = 0;
+
+    while (left < right) {
+        if (height[left] <= height[right]) {
+            if (height[left] >= left_max) {
+                left_max = height[left]; // Found a new peak on the left
+            } else {
+                totalWater += (left_max - height[left]); // Water trapped on top of bar `left`
+            }
+            left++;
+        } else {
+            if (height[right] >= right_max) {
+                right_max = height[right]; // Found a new peak on the right
+            } else {
+                totalWater += (right_max - height[right]); // Water trapped on top of bar `right`
+            }
+            right--;
+        }
+    }
+
+    return totalWater;
 }
 
 /**
@@ -268,9 +359,58 @@ int trapRainWater(const vector<int>& height) {
  * Returns the longest palindromic substring in s.
  * Time Target: O(N^2), Space Target: O(1)
  */
+
+ bool isPalindrome(string s ){
+    if(s.length() == 0 || s.length()==1){
+        return true;
+    }
+    int n = s.length();
+    int left =0;
+    int right = n-1;
+
+    while (left!=right)
+    {
+        if(s[left]!=s[right]){
+            return false;
+        }else{
+            left++;
+            right++;
+        }
+
+    }
+
+    return true;
+    
+ }
 string longestPalindrome(string s) {
-    // TODO: Write your solution here using expand around center (two pointers).
-    return "";
+    if (s.empty()) return "";
+    
+    int start = 0;
+    int maxLen = 1;
+    int n = s.length();
+
+    // Helper lambda to expand outward from a given center
+    auto expandAroundCenter = [&](int left, int right) {
+        while (left >= 0 && right < n && s[left] == s[right]) {
+            int currentLen = right - left + 1;
+            if (currentLen > maxLen) {
+                maxLen = currentLen;
+                start = left; // Record the beginning of this palindrome
+            }
+            left--;  // Expand outward to the left
+            right++; // Expand outward to the right
+        }
+    };
+
+    for (int i = 0; i < n; i++) {
+        // Case 1: Odd-length palindromes (e.g., "aba" centered at i)
+        expandAroundCenter(i, i);
+
+        // Case 2: Even-length palindromes (e.g., "abba" centered between i and i+1)
+        expandAroundCenter(i, i + 1);
+    }
+
+    return s.substr(start, maxLen);
 }
 
 // ============================================================================
