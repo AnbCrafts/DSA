@@ -25,8 +25,10 @@ f:\TCS NQT PREP\
 │   ├── 02_advanced_quant_maths.md                     <- Digital/Prime: P&C, Probability, Mensuration, Progressions
 │   ├── 03_reasoning_ability.md                        <- Blood Relations, Seating, Syllogisms, Data Sufficiency
 │   ├── 04_verbal_ability_english.md                   <- Sentence Correction, Prepositions, Para Jumbles, RC
-│   └── 01_number_systems\
-│       └── day1_number_systems.md                     <- Divisibility & cyclicity basics
+│   ├── 01_number_systems\
+│   │   └── day1_number_systems.md                     <- Divisibility & cyclicity basics
+│   └── 02_percentages\
+│       └── percentages_practice.md                    <- 40 questions across all 8 core percentage types
 └── notes\
     └── error_tracker.md                   <- Weekly mistake log & formula tracker
 ```
