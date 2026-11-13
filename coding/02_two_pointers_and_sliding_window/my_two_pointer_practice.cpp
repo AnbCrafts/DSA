@@ -309,25 +309,36 @@ vector<vector<int>> threeSum(vector<int>& nums) {
     // TODO: Write your solution here using sort + 2-pointer with duplicate skipping.
     vector<vector<int>> collections ;
     vector<int> collectNums;
-    int left =0;
     int n = nums.size();
-    int right = n-1;
     int currSum = 0;
+    sort(nums.begin(),nums.end());
 
     for(int i =0; i<n; i++){
+        int left = i+1;
+        int right = n-1;
         int first = nums[i];
-        while (left!=right)
+        while (left<right)
         {
-            currSum += first + nums[left] + nums[right];
+            currSum = first + nums[left] + nums[right];
             if(currSum==0){
                 collectNums.push_back(first);
                 collectNums.push_back(nums[left]);
                 collectNums.push_back(nums[right]);
 
                 collections.push_back(collectNums);
+
+                left++;
+                right--;
             }
-            left++;
-            right++;
+
+            if(currSum>0){
+                right--;
+            }
+            else if(currSum<0){
+                left++;
+            }
+            
+            
         }
         
     }
@@ -342,9 +353,31 @@ vector<vector<int>> threeSum(vector<int>& nums) {
  */
 int numRescueBoats(vector<int>& people, int limit) {
     // TODO: Write your solution here using greedy sort + two-pointers.
+    sort(people.begin(),people.end());
+    int currSum = 0;
+    int totalTrips =0;
+    int left =0;
+    int right =people.size()-1;
+    
+    while (left<=right)
+    {
+        currSum = people[left] + people[right];
+        if(currSum<=limit){
+            left++;
+            right--;
+        }else{
+            right--;
+        }
+
+        totalTrips++;
+
+        
+
+    }
+    
 
 
-    return 0;
+    return totalTrips;
 }
 
 /**
@@ -354,6 +387,39 @@ int numRescueBoats(vector<int>& people, int limit) {
  */
 vector<int> subarraySumPositive(const vector<int>& arr, long long target) {
     // TODO: Write your solution here using dynamic sliding window / two-pointers.
+    // int left =0;
+    // int right =arr.size()-1;
+    // int currentSum =0;
+    // while (left<right)
+    // {
+    //    currentSum = arr[left] + arr[right];
+    //    if(currentSum= target){
+    //     return{left+1,right+1};
+    //    }
+    //    else if(currentSum>target){
+    //     right--;
+    //    }else{
+    //     left++;
+    //    }
+    // }
+    
+    int left =0;
+    long long sum =0;
+    for(int right =0; right<arr.size();right++){
+        sum += arr[right];
+
+        while (left<right && sum>target)
+        {
+            sum-= arr[left];
+            left++;
+        }
+
+        if(sum==target){
+            return {left+1,right+1};
+        }
+        
+    }
+
     return {-1};
 }
 
