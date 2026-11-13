@@ -118,7 +118,23 @@ vector<int> sortedSquares(const vector<int>& nums) {
  */
 vector<int> twoSumSorted(const vector<int>& numbers, int target) {
     // TODO: Write your solution here using opposite ends two-pointers.
-    return {};
+    vector<int> nums;
+    int n = numbers.size();
+    for(int i =0; i<n; i++){
+        for(int j =1; j<n; j++){
+            if(numbers[i]+numbers[j]==target){
+                if(numbers[i]>numbers[j]){
+                    nums.push_back(numbers[j]);
+                    nums.push_back(numbers[i]);
+                }else{
+                    nums.push_back(numbers[i]);
+                    nums.push_back(numbers[j]);
+
+                }
+            }
+        }
+    }
+    return nums;
 }
 
 /**
@@ -291,8 +307,32 @@ int maxArea(const vector<int>& height) {
  */
 vector<vector<int>> threeSum(vector<int>& nums) {
     // TODO: Write your solution here using sort + 2-pointer with duplicate skipping.
+    vector<vector<int>> collections ;
+    vector<int> collectNums;
+    int left =0;
+    int n = nums.size();
+    int right = n-1;
+    int currSum = 0;
 
-    return {};
+    for(int i =0; i<n; i++){
+        int first = nums[i];
+        while (left!=right)
+        {
+            currSum += first + nums[left] + nums[right];
+            if(currSum==0){
+                collectNums.push_back(first);
+                collectNums.push_back(nums[left]);
+                collectNums.push_back(nums[right]);
+
+                collections.push_back(collectNums);
+            }
+            left++;
+            right++;
+        }
+        
+    }
+
+    return collections;
 }
 
 /**
@@ -302,6 +342,7 @@ vector<vector<int>> threeSum(vector<int>& nums) {
  */
 int numRescueBoats(vector<int>& people, int limit) {
     // TODO: Write your solution here using greedy sort + two-pointers.
+
 
     return 0;
 }
