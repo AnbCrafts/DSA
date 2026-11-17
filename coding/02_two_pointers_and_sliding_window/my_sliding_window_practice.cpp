@@ -33,7 +33,21 @@ using namespace std;
 // ============================================================================
 int lengthOfLongestSubstring(string s) {
     // TODO: Write your solution here using dynamic sliding window + set/map
-    return 0;
+    vector<int> freq(128,0);
+    int left =0;
+    int maxLen =0;
+    for(int right = 0; right<s.length(); right++){
+        freq[s[right]]++;
+        while (freq[s[right]]>1)
+        {
+            freq[s[left]]--;
+            left++;
+        }
+        
+
+        maxLen = max(maxLen,(right-left+1));
+    }
+    return maxLen;
 }
 
 // ============================================================================
@@ -42,6 +56,10 @@ int lengthOfLongestSubstring(string s) {
 // Time: O(N), Space: O(1)
 // ============================================================================
 int minSubArrayLen(int target, const vector<int>& nums) {
+    int left =0;
+    int CurrSum =0;
+    int minLen =0;
+    
     // TODO: Write your solution here using dynamic sliding window (Flavor 2: Minimize)
     return 0;
 }
